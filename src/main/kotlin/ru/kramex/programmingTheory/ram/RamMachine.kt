@@ -20,6 +20,9 @@ import ru.kramex.programmingTheory.ram.operands.RamOperand
 import ru.kramex.programmingTheory.structures.RamDynamicIntArray
 import ru.kramex.programmingTheory.utils.isZero
 
+@DslMarker
+annotation class RamMachineDsl
+
 class RamMachine private constructor(val commands: List<RamCommand>) {
 
     fun work(input: List<Int>): Work = Work(input)
@@ -132,50 +135,62 @@ class RamMachine private constructor(val commands: List<RamCommand>) {
     class Builder {
         private val commands: MutableList<RamCommand> = mutableListOf()
 
+        @RamMachineDsl
         fun load(operand: RamOperand) {
             commands.add(Load(operand))
         }
 
+        @RamMachineDsl
         fun store(operand: LiteralOrDirectAddressingOperand) {
             commands.add(Store(operand))
         }
 
+        @RamMachineDsl
         fun add(operand: RamOperand) {
             commands.add(Add(operand))
         }
 
+        @RamMachineDsl
         fun sub(operand: RamOperand) {
             commands.add(Sub(operand))
         }
 
+        @RamMachineDsl
         fun mult(operand: RamOperand) {
             commands.add(Mult(operand))
         }
 
+        @RamMachineDsl
         fun div(operand: RamOperand) {
             commands.add(Div(operand))
         }
 
+        @RamMachineDsl
         fun read(operand: LiteralOrDirectAddressingOperand) {
             commands.add(Read(operand))
         }
 
+        @RamMachineDsl
         fun write(operand: RamOperand) {
             commands.add(Write(operand))
         }
 
+        @RamMachineDsl
         fun jump(operand: LiteralOperand) {
             commands.add(Jump(operand))
         }
 
+        @RamMachineDsl
         fun jzero(operand: LiteralOperand) {
             commands.add(Jzero(operand))
         }
 
+        @RamMachineDsl
         fun jgtz(operand: LiteralOperand) {
             commands.add(Jgtz(operand))
         }
 
+        @RamMachineDsl
         fun halt() {
             commands.add(Halt)
         }
@@ -202,6 +217,7 @@ class RamMachine private constructor(val commands: List<RamCommand>) {
     }
 
     companion object {
+        @RamMachineDsl
         fun create(init: Builder.() -> Unit): RamMachine =
             RamMachine(Builder().apply(init).build())
     }
